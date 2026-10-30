@@ -1,0 +1,6 @@
+services:
+  site:
+    image: homecraft:latest
+    ports:
+      - "0.0.0.0:9998:80"
+    restart: unless-stopped
