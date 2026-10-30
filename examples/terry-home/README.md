@@ -1,6 +1,6 @@
 # Show Home
 
-This example is based on [Terry's Home](https://terryhu.cn). Run `python3 tools/serve.py` in the repository root, then open `examples/terry-home/` in the browser.
+This example is based on [Terry's Home](https://terryhu.cn). Serve the repository root with any static server (see the top-level README), then open `examples/terry-home/` in the browser. `npm run serve` cannot preview it: it serves only the built `dist/`.
 
 ## Implementation
 

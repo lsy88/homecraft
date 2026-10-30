@@ -22,7 +22,7 @@ assets/           Images (project screenshots, skins, icons)
 engine/           Engine (keep when customizing the site; replace entirely when upgrading)
 examples/terry-home/   Showcase home: reference implementation for buildings, furniture, landscaping, and pets
 backend/mailbox/  Optional: Cloudflare Worker that forwards guestbook messages to email
-tools/            serve.py (local preview), check.mjs (self-check), build.sh (build & deploy)
+tools/            build.sh (build & deploy), check.mjs (self-check)
 plugin/           Portal plugin for regular websites and blogs (homecraft-door.js)
 directory/        Public directory data
 ```
@@ -34,12 +34,14 @@ The import map in `index.html` defines module paths: `@world/` maps to `world/`,
 ## Running and Self-Check
 
 ```sh
-python3 tools/serve.py          # Start local preview; use python on Windows
+npm run serve                   # Start local preview: builds dist/ and serves it with Docker on :9998
 npm run check:site              # Check site metadata, skin, and engine diffs — no dependencies or running server needed
-npm install && npm run check    # Install dependencies and run site + browser checks
+npm install && npm run check -- http://127.0.0.1:9998/   # Install dependencies and run site + browser checks
 ```
 
-- The preview server automatically picks a free port, opens the browser, and prints the address in the terminal. Responses have caching disabled — just refresh after changes. `npm run check` connects to this address.
+- The repository ships no local server of its own. `npm run serve` runs `docker compose up --build`, which serves the built `dist/` at `http://127.0.0.1:9998/`; there is no file watching, so rebuild after changes (`docker compose up --build` again). Any other static server that sends `Cache-Control: no-cache` works too — useful where Docker is unavailable.
+- The browser checks never guess an address. `npm run check` and `npm run check:portal` take the site URL as an argument, or read it from `HOMECRAFT_URL`. Without one they exit with a message.
+- Only the built `dist/` is served, so `examples/terry-home` cannot be previewed through `npm run serve`.
 - `npm run check` first runs `check:site`, then uses a headless browser to verify startup and page opening at desktop and mobile sizes, reports errors, and outputs draw stats. Screenshots are saved in `tools/.check/`; check at least one screenshot after visual changes.
 - Appending `?debug` to the URL displays draw calls, triangle count, and frame time at the top of the page; values exceeding the budget are highlighted in red.
 - When `check:site` reports a missing tagline or logo, ask the user to provide them. For engine diffs in the check report, only revert engine changes unrelated to the current task and keep changes the user already had. `engine/manifest.json` is only updated by maintainers at release time.

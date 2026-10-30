@@ -3,5 +3,4 @@ dist/
 node_modules
 backend/mailbox/.wrangler/
 tools/.check/
-tools/.serve-url
 .impeccable/

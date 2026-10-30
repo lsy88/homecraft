@@ -2,15 +2,14 @@
 // second wearing assets/skin-template.png). Nothing online is read or changed:
 // both lists and the shared directory are served by the browser fixture.
 //
-//   npm run serve          (in another terminal; it prints the address)
-//   npm run check:portal [-- http://127.0.0.1:<port>]
+//   npm run serve          (in another terminal: builds and serves dist/ with Docker)
+//   npm run check:portal [-- http://127.0.0.1:9998/]
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
-import { mkdirSync, readFileSync } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 
-const remembered = () => { try { return readFileSync(new URL('./.serve-url', import.meta.url), 'utf8').trim(); } catch { return ''; } };
-const base = (process.argv[2] || remembered()).replace(/\/$/, '');
-if (!base) { console.log('Nothing is being served. Run python3 tools/serve.py first, or pass the address.'); process.exit(1); }
+const base = (process.argv[2] || process.env.HOMECRAFT_URL || '').replace(/\/$/, '');
+if (!base) { console.log('Nothing is being served. Pass the site address: npm run check:portal -- http://127.0.0.1:9998/ (or set HOMECRAFT_URL).'); process.exit(1); }
 const out = new URL('./.check/portal/', import.meta.url);
 mkdirSync(out, { recursive: true });
 const args = process.platform === 'darwin' ? ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] : ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'];

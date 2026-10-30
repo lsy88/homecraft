@@ -36,7 +36,7 @@
 
 项目已内置初始模板、相关提示词与约束，fork 之后即刻 vibe coding “我的世界”。
 
-在项目目录运行一行命令 `python3 tools/serve.py`，会随机选一个端口并自动打开浏览器。
+在项目目录运行 `npm run serve`，会用 Docker 构建并在 `http://127.0.0.1:9998/` 提供服务；没有 Docker 时，用任意会返回 `Cache-Control: no-cache` 的静态服务器指向项目根目录即可。
 
 Terry's Home完整实现见 [examples/terry-home](examples/terry-home)。  
 

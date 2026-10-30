@@ -8,5 +8,4 @@ backend
 directory
 plugin
 tools/.check
-tools/.serve-url
 .impeccable

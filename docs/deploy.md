@@ -4,6 +4,12 @@ Homecraft is a static site. Run `bash tools/build.sh`, then deploy the files in 
 
 The build script minifies JavaScript modules when `npx` is available locally, and generates gzip copies for text files larger than 255 bytes. If `brotli` is installed, Brotli copies are also generated.
 
+## Docker
+
+`npm run serve` runs `docker compose up --build`, which builds `dist/` and serves it with nginx on `http://127.0.0.1:9998/`. The image carries the same `Cache-Control: no-cache` and `homecraft.json` CORS headers the site needs in production, so a preview here matches production behaviour. There is no file watching: rebuild after changes.
+
+Because only `dist/` goes into the image, `examples/terry-home` is not reachable through this preview.
+
 ## GitHub Pages
 
 1. Go to the repository's **Actions** page and enable workflows when prompted.

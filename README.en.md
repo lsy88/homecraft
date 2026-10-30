@@ -36,7 +36,7 @@ Once you get used to it, there's no going back to a regular personal website…
 
 The project includes a starter template, AI prompts and constraints. Fork it and start vibe coding your own world.
 
-Run a single command, `python3 tools/serve.py`, in the project folder. It picks a random port and automatically opens your browser.
+Run `npm run serve` in the project folder; it builds the site with Docker and serves it at `http://127.0.0.1:9998/`. Without Docker, point any static server that sends `Cache-Control: no-cache` at the project root.
 
 The full source of Terry's Home is in [examples/terry-home](examples/terry-home).
 

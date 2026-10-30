@@ -1,7 +1,8 @@
 // Isolated browser fixtures: no real challenges, tokens or mail deliveries.
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
-const base = process.argv[2] || 'http://127.0.0.1:4192';
+const base = process.argv[2] || process.env.HOMECRAFT_URL;
+if (!base) { console.log('Nothing is being served. Pass the site address: node tools/check-mailbox-ui.cjs http://127.0.0.1:9998/ (or set HOMECRAFT_URL).'); process.exit(1); }
 const endpoint = 'https://mailbox.example.test/send';
 const script = `
   const state = window.__mailboxTest = { widgets: new Map(), created: 0, removed: 0, resets: 0,

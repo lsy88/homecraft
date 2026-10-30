@@ -40,7 +40,7 @@ The return button shows the origin website's name: it prefers the `homecraft.jso
 
 ## Cross-Site Reads
 
-The local `tools/serve.py` allows cross-origin reads only for `homecraft.json`. Configure these response headers for the file when deploying:
+Other sites fetch this file cross-origin, so it needs its own headers. The bundled `nginx/default.conf` already sets them for `npm run serve` and the Docker image; configure the same headers when deploying elsewhere:
 
 ```http
 Access-Control-Allow-Origin: *

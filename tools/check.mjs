@@ -5,22 +5,26 @@
 // tools/check-site.mjs (homecraft.json, the skin, engine/).
 //
 //   npm install            (once: installs Playwright)
-//   npm run serve          (in another terminal; it prints the address and opens the browser)
-//   npm run check [-- http://127.0.0.1:<port>/examples/terry-home/]
+//   npm run serve          (in another terminal: builds and serves dist/ with Docker)
+//   npm run check [-- http://127.0.0.1:9998/]
+//
+// This repository has no local server of its own, so the address is never
+// guessed: pass it, or set HOMECRAFT_URL. Any static server works as long as
+// it sends Cache-Control: no-cache (docs/deploy.md).
 //
 // Frame times here come from this computer's GPU, not a phone's: they show
 // regressions, not real-phone smoothness. Try a real phone before you ship.
-import { mkdirSync, readFileSync } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 const { chromium } = await import('playwright').catch(() => {
   console.log('The browser check needs Playwright: run npm install once, then try again. (npm run check:site needs nothing installed.)');
   process.exit(1);
 });
-const remembered = () => { try { return readFileSync(new URL('./.serve-url', import.meta.url), 'utf8').trim(); } catch { return ''; } };
-const url = process.argv[2] || remembered();
-if (!url) { console.log('Nothing is being served. Run python3 tools/serve.py first, or pass the address.'); process.exit(1); }
-if (!(await fetch(url).catch(() => null))) { console.log(`Nothing answers at ${url}: start the site first (python3 tools/serve.py).`); process.exit(1); }
+const url = process.argv[2] || process.env.HOMECRAFT_URL;
+const hint = 'Pass the site address: npm run check -- http://127.0.0.1:9998/ (or set HOMECRAFT_URL).';
+if (!url) { console.log(`Nothing is being served. ${hint}`); process.exit(1); }
+if (!(await fetch(url).catch(() => null))) { console.log(`Nothing answers at ${url}. Start the site first (npm run serve), or check the address.`); process.exit(1); }
 const out = fileURLToPath(new URL('./.check/', import.meta.url));
 mkdirSync(out, { recursive: true });
 const gpu = process.platform === 'darwin'
